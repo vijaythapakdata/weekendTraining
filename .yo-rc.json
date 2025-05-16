@@ -1,0 +1,21 @@
+{
+  "@microsoft/generator-sharepoint": {
+    "plusBeta": false,
+    "isCreatingSolution": false,
+    "nodeVersion": "18.20.6",
+    "sdksVersions": {
+      "@microsoft/microsoft-graph-client": "3.0.2",
+      "@microsoft/teams-js": "2.24.0"
+    },
+    "version": "1.20.0",
+    "libraryName": "spfx-weekendtraining",
+    "libraryId": "a6c4d85c-d72d-4853-a382-4284a87296b2",
+    "environment": "spo",
+    "packageManager": "npm",
+    "solutionName": "SpfxWeekendtraining",
+    "solutionShortDescription": "SpfxWeekendtraining description",
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "componentType": "webpart"
+  }
+}

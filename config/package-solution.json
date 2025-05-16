@@ -1,0 +1,41 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
+  "solution": {
+    "name": "spfx-weekendtraining-client-side-solution",
+    "id": "a6c4d85c-d72d-4853-a382-4284a87296b2",
+    "version": "1.0.0.0",
+    "includeClientSideAssets": true,
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "developer": {
+      "name": "",
+      "websiteUrl": "",
+      "privacyUrl": "",
+      "termsOfUseUrl": "",
+      "mpnId": "Undefined-1.20.0"
+    },
+    
+    "metadata": {
+      "shortDescription": {
+        "default": "SpfxWeekendtraining description"
+      },
+      "longDescription": {
+        "default": "SpfxWeekendtraining description"
+      },
+      "screenshotPaths": [],
+      "videoUrl": "",
+      "categories": []
+    },
+    "features": [
+      {
+        "title": "spfx-weekendtraining Feature",
+        "description": "The feature that activates elements of the spfx-weekendtraining solution.",
+        "id": "e858162f-5748-4d99-99ea-4dfe7f8ec2a7",
+        "version": "1.0.0.0"
+      }
+    ]
+  },
+  "paths": {
+    "zippedPackage": "solution/spfx-weekendtraining.sppkg"
+  }
+}
