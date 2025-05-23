@@ -4,7 +4,7 @@ import type { ISampleWebProps } from './ISampleWebProps';
 import { ISampleWebState } from './ISampleWebState';
 import { Web } from '@pnp/sp/webs';
 import {Dialog} from "@microsoft/sp-dialog";
-import { PrimaryButton, Slider, TextField } from '@fluentui/react';
+import { ChoiceGroup, Dropdown, PrimaryButton, Slider, TextField } from '@fluentui/react';
 import {PeoplePicker, PrincipalType} from "@pnp/spfx-controls-react/lib/PeoplePicker";
 export default class SampleWeb extends React.Component<ISampleWebProps,ISampleWebState> {
   constructor(props:ISampleWebProps,state:ISampleWebState){
@@ -18,7 +18,11 @@ export default class SampleWeb extends React.Component<ISampleWebProps,ISampleWe
       Manager:[],
       ManagerId:[],
       Admin:"",
-      AdminId:0
+      AdminId:0,
+      City:"",
+      Department:"",
+      Skills:[],
+      Gender:""
 
     }
   }
@@ -33,7 +37,11 @@ export default class SampleWeb extends React.Component<ISampleWebProps,ISampleWe
       Address:this.state.PermanentAddress,
       Score:this.state.Score,
       ManagerId:{results:this.state.ManagerId},
-      AdminId:this.state.AdminId
+      AdminId:this.state.AdminId,
+      Department:this.state.Department,
+      Gender:this.state.Gender,
+      CityId:this.state.City,
+      Skills:{results:this.state.Skills},
 
     }).then((res)=>{
       Dialog.alert("Form Submitted successfully");
@@ -47,7 +55,11 @@ export default class SampleWeb extends React.Component<ISampleWebProps,ISampleWe
         Manager:[],
       ManagerId:[],
       Admin:"",
-      AdminId:0
+      AdminId:0,
+       City:"",
+      Department:"",
+      Skills:[],
+      Gender:""
       });
     
     })
@@ -104,6 +116,27 @@ defaultSelectedUsers={[this.state.Admin?this.state.Admin:""]}
     onChange={this._getAdmin}
     resolveDelay={1000}
     webAbsoluteUrl={this.props.siteurl}
+    />
+    <Dropdown
+    label='Department'
+    selectedKey={this.state.Department}
+    options={this.props.DepartmentOptions}
+    onChange={(_,option)=>this.HandleChange("Department",option?option.key:"")}
+    placeholder='Select Department'
+    />
+    <Dropdown
+    label='City'
+    selectedKey={this.state.City}
+    options={this.props.CityOptions}
+    onChange={(_,option)=>this.HandleChange("City",option?option.key:"")}
+    placeholder='Select City'
+    />
+    <ChoiceGroup
+    label='Gender'
+    selectedKey={this.state.Gender}
+    options={this.props.GenderOptions}
+    onChange={(_,option)=>this.HandleChange("Gender",option?option.key:"")}
+    // placeholder='Select Department'
     />
     <br/>
     <PrimaryButton text=' Save' onClick={()=>this.createForm()} iconProps={{iconName:'save'}}/>

@@ -8,4 +8,8 @@ export interface ISampleWebState{
     ManagerId:any;
     Admin:any;
     AdminId:any;
+    City:any;
+    Gender:string;
+    Department:string;
+    Skills:any[];
 }
