@@ -17,12 +17,21 @@
           "manifest": "./src/webparts/sampleWeb/SampleWebWebPart.manifest.json"
         }
       ]
+    },
+    "functional-component-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/functionalComponent/FunctionalComponentWebPart.js",
+          "manifest": "./src/webparts/functionalComponent/FunctionalComponentWebPart.manifest.json"
+        }
+      ]
     }
   },
   "externals": {},
   "localizedResources": {
     "HelloWorldWebPartStrings": "lib/webparts/helloWorld/loc/{locale}.js",
     "SampleWebWebPartStrings": "lib/webparts/sampleWeb/loc/{locale}.js",
-    "ControlStrings": "node_modules/@pnp/spfx-controls-react/lib/loc/{locale}.js"
+    "ControlStrings": "node_modules/@pnp/spfx-controls-react/lib/loc/{locale}.js",
+    "FunctionalComponentWebPartStrings": "lib/webparts/functionalComponent/loc/{locale}.js"
   }
 }

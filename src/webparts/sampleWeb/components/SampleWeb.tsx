@@ -4,7 +4,7 @@ import type { ISampleWebProps } from './ISampleWebProps';
 import { ISampleWebState } from './ISampleWebState';
 import { Web } from '@pnp/sp/webs';
 import {Dialog} from "@microsoft/sp-dialog";
-import { ChoiceGroup, Dropdown, PrimaryButton, Slider, TextField } from '@fluentui/react';
+import { ChoiceGroup, Dropdown, IDropdownOption, Label, PrimaryButton, Slider, TextField } from '@fluentui/react';
 import {PeoplePicker, PrincipalType} from "@pnp/spfx-controls-react/lib/PeoplePicker";
 export default class SampleWeb extends React.Component<ISampleWebProps,ISampleWebState> {
   constructor(props:ISampleWebProps,state:ISampleWebState){
@@ -22,15 +22,19 @@ export default class SampleWeb extends React.Component<ISampleWebProps,ISampleWe
       City:"",
       Department:"",
       Skills:[],
-      Gender:""
+      Gender:"",
+      DOB:"",
+      Attachments:[]
 
     }
   }
   //create function
 
   public async createForm(){
-    let web=Web(this.props.siteurl);
-    await web.lists.getByTitle(this.props.ListName).items.add({
+   try{
+    const web=Web(this.props.siteurl);
+    const list=web.lists.getByTitle(this.props.ListName);
+    const item=await list.items.add({
       Title:this.state.Name,
       EmailAddress:this.state.Email,
       Age:parseInt(this.state.Age),
@@ -42,35 +46,78 @@ export default class SampleWeb extends React.Component<ISampleWebProps,ISampleWe
       Gender:this.state.Gender,
       CityId:this.state.City,
       Skills:{results:this.state.Skills},
+      DOB:new Date(this.state.DOB),
+    });
+    const itemId=item.data.Id;
+    //upload attachemets
+    for(const file of this.state.Attachments){
+      const arrayBuffer=await file.arrayBuffer();
+      await list.items.getById(itemId).attachmentFiles.add(file.name,arrayBuffer);
+    }
 
-    }).then((res)=>{
-      Dialog.alert("Form Submitted successfully");
-      console.log(res);
-      this.setState({
-        Name:"",
-        Email:"",
+    Dialog.alert("Item Created Successfully");
+    this.setState({
+      Name:"",
+      Email:"",
         Age:"",
-        PermanentAddress:"",
-        Score:0,
-        Manager:[],
+      PermanentAddress:"",
+      Score:0,
+      Manager:[],
       ManagerId:[],
       Admin:"",
       AdminId:0,
-       City:"",
+      City:"",
       Department:"",
       Skills:[],
-      Gender:""
-      });
-    
+      Gender:"",
+      DOB:"",
+      Attachments:[]
     })
-    .catch((err)=>{
-      console.log(err);
-      Dialog.alert("Error in submitting form");
-    });
+   }
+    catch(error){
+      console.log(error);
+      Dialog.alert("Error in creating item");
+    }
   }
   //form event
   private HandleChange=(fieldvalue:keyof ISampleWebState,value:string|number|boolean):void=>{
     this.setState({[fieldvalue]:value}as unknown as Pick<ISampleWebState,keyof ISampleWebState>);
+  }
+  //Upload files
+  private uploadFiles=(event:React.ChangeEvent<HTMLInputElement>):void=>{
+    const files=event.target.files;
+    if(files){
+      this.setState({
+        Attachments:Array.from(files)
+      })
+    }
+  }
+  //Get Skiils
+  private _getSkills=(event:React.FormEvent<HTMLDivElement>,option:IDropdownOption):void=>{
+const selectedKey=option.selected?[...this.state.Skills,option.key as string]:this.state.Skills.filter((key:any)=>key!==option.key);
+this.setState({
+  Skills:selectedKey
+});
+  }
+  //Reset form
+  private resetForm=():void=>{
+    this.setState({
+      Name:"",
+      Email:"",
+        Age:"",
+      PermanentAddress:"",
+      Score:0,
+      Manager:[],
+      ManagerId:[],
+      Admin:"",
+      AdminId:0,
+      City:"",
+      Department:"",
+      Skills:[],
+      Gender:"",
+      DOB:"",
+      Attachments:[]
+    });
   }
   public render(): React.ReactElement<ISampleWebProps> {
     
@@ -138,8 +185,21 @@ defaultSelectedUsers={[this.state.Admin?this.state.Admin:""]}
     onChange={(_,option)=>this.HandleChange("Gender",option?option.key:"")}
     // placeholder='Select Department'
     />
+    <Dropdown
+    label='Skills'
+    // selectedKey={this.state.Cit}
+    defaultSelectedKeys={this.state.Skills}
+    options={this.props.SkillsOptions}
+    // onChange={(_,option)=>this.HandleChange("City",option?option.key:"")}
+    onChange={this._getSkills}
+    placeholder='select Skills'
+    multiSelect
+    />
+    <Label>Upload Attachments</Label>
+    <input type='file' multiple onChange={this.uploadFiles}/>
     <br/>
-    <PrimaryButton text=' Save' onClick={()=>this.createForm()} iconProps={{iconName:'save'}}/>
+    <PrimaryButton text=' Save' onClick={()=>this.createForm()} iconProps={{iconName:'save'}}/>&nbsp;&nbsp;&nbsp;
+    <PrimaryButton text='Reset' onClick={this.resetForm} iconProps={{iconName:'reset'}}/>
     </>
     );
   }

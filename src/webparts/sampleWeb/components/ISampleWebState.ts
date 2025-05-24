@@ -12,4 +12,6 @@ export interface ISampleWebState{
     Gender:string;
     Department:string;
     Skills:any[];
+    Attachments:any[];
+    DOB:any;
 }
